@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoTrack by Welcome</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f8f5;
+            color: #333;
+        }
+
+        header {
+            background-color: #4caf50;
+            color: white;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .container {
+            padding: 1rem;
+        }
+
+        .action-card {
+            background-color: white;
+            margin: 1rem 0;
+            padding: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .action-card h3 {
+            margin: 0 0 0.5rem;
+        }
+
+        .form-group {
+            margin: 1rem 0;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-group input, .form-group select, .form-group button {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .form-group button {
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .form-group button:hover {
+            background-color: #45a049;
+        }
+
+        footer {
+            text-align: center;
+            padding: 1rem;
+            background-color: #4caf50;
+            color: white;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+
+        .progress-summary {
+            background-color: #e8f5e9;
+            padding: 1rem;
+            margin-top: 1rem;
+            border-radius: 8px;
+        }
+
+        .progress-summary h3 {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>EcoTrack by Welcome</h1>
+        <p>Track your ecological progress and reduce your carbon footprint!</p>
+    </header>
+
+    <div class="container">
+        <!-- Action Input Section -->
+        <section class="action-card">
+            <h3>Log Your Eco-Action</h3>
+            <form id="ecoForm">
+                <div class="form-group">
+                    <label for="actionType">Action Type:</label>
+                    <select id="actionType" required>
+                        <option value="">-- Select Action --</option>
+                        <option value="commute">Commute (Bike, Public Transport, Carpool)</option>
+                        <option value="waste">Waste Reduction (Composting, Reuse)</option>
+                        <option value="energy">Energy Conservation (LEDs, Devices Off)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="quantity">Quantity (e.g., km for commute, items reused, kWh saved):</label>
+                    <input type="number" id="quantity" min="1" required>
+                </div>
+
+                <div class="form-group">
+                    <button type="submit">Submit Action</button>
+                </div>
+            </form>
+        </section>
+
+        <!-- Progress Summary Section -->
+        <section class="progress-summary" id="progressSummary">
+            <h3>Your Progress</h3>
+            <p>CO₂ Avoided: <span id="co2Avoided">0</span> kg</p>
+            <p>Total Actions Logged: <span id="actionsLogged">0</span></p>
+        </section>
+    </div>
+
+    <footer>
+        <p>EcoTrack by Welcome &copy; 2025</p>
+    </footer>
+
+    <script>
+        const form = document.getElementById('ecoForm');
+        const co2AvoidedSpan = document.getElementById('co2Avoided');
+        const actionsLoggedSpan = document.getElementById('actionsLogged');
+
+        let totalCO2Avoided = 0;
+        let totalActions = 0;
+
+        form.addEventListener('submit', (event) => {
+            event.preventDefault();
+
+            const actionType = document.getElementById('actionType').value;
+            const quantity = parseFloat(document.getElementById('quantity').value);
+
+            if (actionType && quantity) {
+                // Simplified CO2 calculations based on action type
+                let co2Factor = 0;
+
+                switch (actionType) {
+                    case 'commute':
+                        co2Factor = 0.21; // kg CO2 per km avoided
+                        break;
+                    case 'waste':
+                        co2Factor = 0.5; // kg CO2 per item reused/composted
+                        break;
+                    case 'energy':
+                        co2Factor = 0.4; // kg CO2 per kWh saved
+                        break;
+                }
+
+                const co2Saved = quantity * co2Factor;
+                totalCO2Avoided += co2Saved;
+                totalActions++;
+
+                co2AvoidedSpan.textContent = totalCO2Avoided.toFixed(2);
+                actionsLoggedSpan.textContent = totalActions;
+
+                form.reset();
+            }
+        });
+    </script>
+</body>
+</html>
